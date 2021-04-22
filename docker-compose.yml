@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  redis:
+    image: redis:alpine
+  celery:
+    build: .
+    command: celery -A celery_test worker -l info
+    volumes: 
+      - ./data:/data1
+    depends_on:
+      - redis
+  celery_2:
+    build: .
+    command: celery -A celery_test worker -l info
+    volumes:
+      - ./data:/data2
+    depends_on:
+      - redis
+  celery-beat:
+    build: .
+    command: celery -A celery_test beat -l info
+    depends_on:
+      - redis
+
+
+
